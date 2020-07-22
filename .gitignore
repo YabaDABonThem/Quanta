@@ -35,4 +35,5 @@ sysinfo.txt
 # ===============
 Temp
 *.pdb
+*.log
 Library/Artifacts/
