@@ -30,6 +30,12 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
+	// fields from SimpleCharacterController.cs
+	// animation stuff
+	public ParticleSystem rippleFX;
+	Animator animator;
+
+
 	private void Awake()
 	{
 		m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -39,9 +45,12 @@ public class CharacterController2D : MonoBehaviour
 
 		if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
+
+		// Simple Char Controller stuff
+		animator = GetComponent<Animator>();
 	}
 
-	private void FixedUpdate()
+	private void FixedUpdate() // NOTE: This update is for physics calculations only
 	{
 		bool wasGrounded = m_Grounded;
 		m_Grounded = false;
@@ -60,8 +69,14 @@ public class CharacterController2D : MonoBehaviour
 		}
 	}
 
+    private void Update()
+    {
+		// WorldToggle();
+		// animator.SetFloat("MoveX", lookDirection.x); // We currently have a Flip() Method instead of lookDirection. 
+	}
 
-	public void Move(float move, bool crouch, bool jump)
+
+    public void Move(float move, bool crouch, bool jump)
 	{
 		// If crouching, check to see if the character can stand up
 		if (!crouch)
@@ -144,4 +159,17 @@ public class CharacterController2D : MonoBehaviour
 		theScale.x *= -1;
 		transform.localScale = theScale;
 	}
+
+
+	// WorldToggle is currently under maintenance. Please stand by. 
+	/* 
+	private void WorldToggle() // NOTE: THIS METHOD IS ONLY A CHECK, DOES NOT ACTUALLY TOGGLE THE WORLD!
+	{
+		if (Input.GetButtonDown("Mono"))
+		{
+			// bruh moment the ripple effect is currently broken. 
+			GameObject rfx = Instantiate(rippleFX.gameObject, m_Rigidbody2D.position, Quaternion.identity);
+		}
+	}
+	*/
 }
