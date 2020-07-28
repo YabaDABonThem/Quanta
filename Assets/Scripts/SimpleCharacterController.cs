@@ -57,6 +57,7 @@ public class SimpleCharacterController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.G))
         {
+            // bruh moment the ripple effect is currently broken. 
             GameObject rfx = Instantiate(rippleFX.gameObject, rigidbody2d.position, Quaternion.identity);
         }
     }
