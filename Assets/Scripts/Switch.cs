@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * NOTE: Make sure to uncheck one of the layers from the culling mask, or else this script won't work. 
+ */
+
 public class Switch : MonoBehaviour
 {
-    bool switched = false;
     Camera mainCamera;
 
     private void Start()
@@ -15,14 +18,9 @@ public class Switch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("h"))
+        if (Input.GetButtonDown("Mono")) // TODO: change to GetButtonDown later
         {
-            switched = !switched;
-            Debug.Log("Switched");
-        }
-
-        if (switched)
-        {
+            // Debug.Log("Switched");
             // Switch between colored and monochrome.
             mainCamera.cullingMask ^= 1 << LayerMask.NameToLayer("MonochromeGround");
             mainCamera.cullingMask ^= 1 << LayerMask.NameToLayer("ColoredGround");
