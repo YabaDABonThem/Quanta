@@ -13,6 +13,7 @@ public class Switch : MonoBehaviour
     private void Start()
     {
         mainCamera = GetComponent<Camera>();
+        // Remember to attach this to the camera or ur a dum dum
     }
 
     // Update is called once per frame
@@ -24,6 +25,7 @@ public class Switch : MonoBehaviour
             // Switch between colored and monochrome.
             mainCamera.cullingMask ^= 1 << LayerMask.NameToLayer("MonochromeGround");
             mainCamera.cullingMask ^= 1 << LayerMask.NameToLayer("ColoredGround");
+            // Change these names later, when we actually have assets. Smh we'd probably have some if a few art people weren't slow af
         }
     }
 }

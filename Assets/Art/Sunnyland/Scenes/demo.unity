@@ -764,7 +764,7 @@ GameObject:
   - component: {fileID: 1807344142}
   m_Layer: 0
   m_Name: gem-1
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -922,7 +922,7 @@ GameObject:
   - component: {fileID: 1938596830}
   m_Layer: 8
   m_Name: Ground
-  m_TagString: Untagged
+  m_TagString: Interactable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2250,6 +2250,10 @@ PrefabInstance:
     - target: {fileID: 271110619, guid: 8b7783e3452013845815cef420ccfec3, type: 3}
       propertyPath: OnCrouchEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 271110619, guid: 8b7783e3452013845815cef420ccfec3, type: 3}
+      propertyPath: JumpForce
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 271110620, guid: 8b7783e3452013845815cef420ccfec3, type: 3}
       propertyPath: m_Enabled
