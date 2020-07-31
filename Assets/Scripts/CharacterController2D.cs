@@ -35,6 +35,11 @@ public class CharacterController2D : MonoBehaviour
 	public ParticleSystem rippleFX;
 	Animator animator;
 
+	// Double Jump Stuff
+	private bool DoubleJumpActivated = false;
+	private int MaxJumps = 2; // TODO: CHANGE THIS?
+	private int JumpCount = 0;
+
 
 	private void Awake()
 	{
@@ -66,6 +71,9 @@ public class CharacterController2D : MonoBehaviour
 			{
 				// Ground check
 				m_Grounded = true;
+
+				JumpCount = 0;
+
 				if(!wasGrounded) OnLandEvent.Invoke();
 			}
 		}
@@ -124,7 +132,7 @@ public class CharacterController2D : MonoBehaviour
 			}
 
 			// Move the character by finding the target velocity
-			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+			Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y); // Why is this a thing?
 			// And then smoothing it out and applying it to the character
 			m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
@@ -142,12 +150,18 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 		// If the player should jump...
-		if (m_Grounded && jump)
+		if ((m_Grounded && jump) || (jump && (JumpCount < MaxJumps)))
 		{
 			// Add a vertical force to the player.
-			// m_Grounded = false;
-			//m_Rigidbody2D.velocity = new Vector2(0f, m_JumpForce); // IT'S RIGHT, BUT IT'S WRONG!!!
-			m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			m_Grounded = false;
+
+
+			// WAIT, DID I ACTUALLY GET IT TO WORK?!?!?!?!
+			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 10); // IT'S RIGHT, BUT IT'S WRONG!!!
+																				// IDK why this number has to be hard-coded in. 
+																				// (using a variable makes him jump like superman
+			//m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			JumpCount++;
 		}
 	}
 
