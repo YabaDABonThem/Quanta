@@ -36,7 +36,7 @@ public class CharacterController2D : MonoBehaviour
 	Animator animator;
 
 	// Double Jump Stuff
-	private bool DoubleJumpActivated = false;
+	// private bool DoubleJumpEnabled = false; // ignore for now
 	private int MaxJumps = 2; // TODO: CHANGE THIS?
 	private int JumpCount = 0;
 
