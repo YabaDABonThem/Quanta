@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Interactable
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -50,4 +51,10 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Color
+    uniqueID: 1624782063
+    locked: 0
+  - name: Mono
+    uniqueID: 1694590299
     locked: 0
