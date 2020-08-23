@@ -48,7 +48,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 23
+  controlID: 96
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -68,8 +68,8 @@ MonoBehaviour:
     y: 0
     width: 461
     height: 947
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
@@ -95,8 +95,8 @@ MonoBehaviour:
     y: 0
     width: 456
     height: 573
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -220,7 +220,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 24
+  controlID: 97
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 25
+  controlID: 98
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -437,32 +437,32 @@ MonoBehaviour:
     m_Folders:
     - Assets/Scripts
   m_ViewMode: 1
-  m_StartGridSize: 64
+  m_StartGridSize: 72
   m_LastFolders:
   - Assets/Scripts
-  m_LastFoldersGridSize: -1
+  m_LastFoldersGridSize: 72
   m_LastProjectPath: D:\Allen\src\Unity\QuantaDev
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 83}
-    m_SelectedIDs: 3e3b0000
-    m_LastClickedID: 15166
-    m_ExpandedIDs: 000000000a3b00000c3b00000e3b0000103b0000123b0000143b000000ca9a3b
+    scrollPos: {x: 0, y: 195}
+    m_SelectedIDs: 323b0000
+    m_LastClickedID: 15154
+    m_ExpandedIDs: 00000000023b0000043b0000063b0000083b00000a3b00000c3b0000343b000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: 
-      m_OriginalName: 
+      m_Name: Fx
+      m_OriginalName: Fx
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 0
+      m_UserData: 15138
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 11
+      m_OriginalEventType: 0
       m_IsRenamingFilename: 1
       m_ClientGUIView: {fileID: 5}
     m_SearchString: 
@@ -476,7 +476,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000000a3b00000c3b00000e3b0000103b0000123b0000143b0000
+    m_ExpandedIDs: 00000000023b0000043b0000063b0000083b00000a3b00000c3b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -529,7 +529,7 @@ MonoBehaviour:
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
     m_ScrollPosition: {x: 0, y: 0}
-    m_GridSize: 64
+    m_GridSize: 72
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 200
 --- !u!114 &16
@@ -601,7 +601,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 5cfbffff
+      m_ExpandedIDs: bc9fffff8aa1ffffe0a2ffff52a3ffffc2b1ffffe2b6fffffab6fffff2c2ffff00d6ffff9ed6ffffd4d6ffffc4dcffff24ddffff5cddffffa6ddffffb8deffffd0deffffc6e0ffff54e1ffff74e6ffffcce6ffffa6e7ffffaeedffff06efffffe6f0ffffaef3ffff5cfbffff000000002c3d00004a3d000096410000764800008a480000444a0000b84b0000cc4b00004c4c0000a2520000585a0000325d0000465d0000b01df412
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -661,9 +661,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 8.950598, y: 2.3968706, z: -15.307809}
+    m_Target: {x: 4.4267755, y: -0.39441332, z: -98.18185}
     speed: 2
-    m_Value: {x: 8.950598, y: 2.3968706, z: -15.307809}
+    m_Value: {x: 4.5533886, y: -0.10715997, z: -98.14837}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -713,9 +713,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 10.887666
+    m_Target: 8.883935
     speed: 2
-    m_Value: 10.887666
+    m_Value: 9.302549
   m_Ortho:
     m_Target: 1
     speed: 2

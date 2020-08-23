@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Experimental.AssetImporters;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
@@ -30,10 +31,8 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
-	// fields from SimpleCharacterController.cs
-	// animation stuff
-	public ParticleSystem rippleFX;
-	Animator animator;
+	//Fields for WorldToggle class
+	public WorldToggle worldToggle;
 
 	// Double Jump Stuff
 	// private bool DoubleJumpEnabled = false; // ignore for now
@@ -51,11 +50,6 @@ public class CharacterController2D : MonoBehaviour
 
 		if (OnCrouchEvent == null)
 			OnCrouchEvent = new BoolEvent();
-
-		// Simple Char Controller stuff
-		// animator = GetComponent<Animator>();
-
-
 	}
 
 	private void FixedUpdate() // NOTE: This update is for physics calculations only
@@ -82,7 +76,11 @@ public class CharacterController2D : MonoBehaviour
 
     private void Update()
     {
-		// WorldToggle();
+		if (Input.GetKeyDown(KeyCode.C))
+        {
+			worldToggle.Toggle();
+        }
+		
 		// animator.SetFloat("MoveX", lookDirection.x); // We currently have a Flip() Method instead of lookDirection. 
 	}
 

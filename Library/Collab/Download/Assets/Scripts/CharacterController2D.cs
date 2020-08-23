@@ -36,7 +36,8 @@ public class CharacterController2D : MonoBehaviour
 
 	// Double Jump Stuff
 	// private bool DoubleJumpEnabled = false; // ignore for now
-	private int MaxJumps = 2; // TODO: CHANGE THIS?
+	// private int MaxJumps = 2; // TODO: CHANGE THIS?
+	private bool DoubleJumped = false;
 	private int JumpCount = 0;
 
 
@@ -54,10 +55,11 @@ public class CharacterController2D : MonoBehaviour
 	private void FixedUpdate() // NOTE: This update is for physics calculations only
 	{
 		bool wasGrounded = m_Grounded;
-		// m_Grounded = false;
+		 m_Grounded = false;
 
-		// The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+		 //The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
+		
 		Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
 		for (int i = 0; i < colliders.Length; i++)
 		{
@@ -65,15 +67,64 @@ public class CharacterController2D : MonoBehaviour
 			{
 				// Ground check
 				m_Grounded = true;
-
+				DoubleJumped = false;
 				JumpCount = 0;
 
 				if(!wasGrounded) OnLandEvent.Invoke();
 			}
 		}
+		
+
+
 	}
 
-    private void Update()
+
+	void OnCollisionEnter(Collision collision)
+	{
+		bool wasGrounded = m_Grounded;
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			// Ground check
+			m_Grounded = true;
+			DoubleJumped = false;
+
+			if (!wasGrounded) OnLandEvent.Invoke();
+		}
+	}
+
+
+	void OnCollisionExit(Collision collision)
+	{
+		bool wasGrounded = m_Grounded;
+		if (collision.gameObject.CompareTag("Ground"))
+		{
+			// Ground check
+			m_Grounded = false;
+			DoubleJumped = false;
+
+			if (!wasGrounded) OnLandEvent.Invoke();
+		}
+	}
+
+
+	bool IsGrounded()
+	{
+		RaycastHit hit;
+		float raycastDistance = 10;
+		//Raycast to to the floor objects only
+		int mask = 1 << LayerMask.NameToLayer("Ground");
+
+		//Raycast downwards
+		if (Physics.Raycast(transform.position, Vector3.down, out hit,
+			raycastDistance, mask))
+		{
+			return true;
+		}
+		return false;
+	}
+
+
+	private void Update()
     {
 		if (Input.GetKeyDown(KeyCode.C))
         {
@@ -148,18 +199,23 @@ public class CharacterController2D : MonoBehaviour
 			}
 		}
 		// If the player should jump...
-		if ((m_Grounded && jump) || (jump && (JumpCount < MaxJumps)))
+		// if ((m_Grounded && jump) || (jump && (JumpCount < MaxJumps)))
+		if ((m_Grounded && jump) || (jump && DoubleJumped == false))
 		{
 			// Add a vertical force to the player.
+			if (m_Grounded == false) DoubleJumped = true;
+
 			m_Grounded = false;
+			
+			
 
 
 			// WAIT, DID I ACTUALLY GET IT TO WORK?!?!?!?!
 			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 10); // IT'S RIGHT, BUT IT'S WRONG!!!
 																				// IDK why this number has to be hard-coded in. 
 																				// (using a variable makes him jump like superman
-			//m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
-			JumpCount++;
+			// m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
+			// JumpCount++;
 		}
 	}
 
