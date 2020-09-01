@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animator;
 
+    //Fields for WorldToggle class
+    public WorldToggle worldToggle;
+
     public float RunSpeed = 40f;
 
     float HorizontalMove = 0f;
@@ -36,6 +39,13 @@ public class PlayerMovement : MonoBehaviour
         {
             crouch = false;
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            worldToggle.Toggle();
+        }
+        
+        
     }
     public void OnLanding()
     {
@@ -50,4 +60,21 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(HorizontalMove * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if(collision.tag == "Interactable")
+        {
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                Interactable1 interactable = collision.GetComponent<Interactable1>();
+                if(interactable == null)
+                {
+                    Debug.Log("null");
+                }
+                interactable.dualConfirm++;
+            }
+        }
+    }
+
 }

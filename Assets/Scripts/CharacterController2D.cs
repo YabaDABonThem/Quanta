@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
 {
-	[SerializeField] private float m_JumpForce = 800f;                          // Amount of force added when the player jumps.
+	[SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 	[SerializeField] private bool m_AirControl = true;                         // Whether or not a player can steer while jumping;
@@ -31,8 +31,6 @@ public class CharacterController2D : MonoBehaviour
 	public BoolEvent OnCrouchEvent;
 	private bool m_wasCrouching = false;
 
-	//Fields for WorldToggle class
-	public WorldToggle worldToggle;
 
 	// Double Jump Stuff
 	// private bool DoubleJumpEnabled = false; // ignore for now
@@ -126,10 +124,6 @@ public class CharacterController2D : MonoBehaviour
 
 	private void Update()
     {
-		if (Input.GetKeyDown(KeyCode.C))
-        {
-			worldToggle.Toggle();
-        }
 		
 		// animator.SetFloat("MoveX", lookDirection.x); // We currently have a Flip() Method instead of lookDirection. 
 	}
