@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class CharacterController2D : MonoBehaviour
 {
-	[SerializeField] private float m_JumpForce = 400f;                          // Amount of force added when the player jumps.
+	[SerializeField] private float m_JumpForce = 800f;                          // Amount of force added when the player jumps.
 	[Range(0, 1)] [SerializeField] private float m_CrouchSpeed = .36f;          // Amount of maxSpeed applied to crouching movement. 1 = 100%
 	[Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
 	[SerializeField] private bool m_AirControl = true;                         // Whether or not a player can steer while jumping;
@@ -13,7 +13,7 @@ public class CharacterController2D : MonoBehaviour
 	[SerializeField] private Transform m_CeilingCheck;                          // A position marking where to check for ceilings
 	[SerializeField] private Collider2D m_CrouchDisableCollider;                // A collider that will be disabled when crouching
 
-	const float k_GroundedRadius = .005f; // Radius of the overlap circle to determine if grounded
+	const float k_GroundedRadius = .4f; // Radius of the overlap circle to determine if grounded
 	private bool m_Grounded;            // Whether or not the player is grounded.
 	const float k_CeilingRadius = .2f; // Radius of the overlap circle to determine if the player can stand up
 	private Rigidbody2D m_Rigidbody2D;
@@ -55,7 +55,7 @@ public class CharacterController2D : MonoBehaviour
 	private void FixedUpdate() // NOTE: This update is for physics calculations only
 	{
 		bool wasGrounded = m_Grounded;
-		 m_Grounded = false;
+		m_Grounded = false;
 
 		 //The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
 		// This can be done using layers instead but Sample Assets will not overwrite your project settings.
@@ -78,7 +78,7 @@ public class CharacterController2D : MonoBehaviour
 
 	}
 
-
+	/*
 	void OnCollisionEnter(Collision collision)
 	{
 		bool wasGrounded = m_Grounded;
@@ -122,7 +122,7 @@ public class CharacterController2D : MonoBehaviour
 		}
 		return false;
 	}
-
+	*/
 
 	private void Update()
     {
@@ -206,14 +206,15 @@ public class CharacterController2D : MonoBehaviour
 			if (m_Grounded == false) DoubleJumped = true;
 
 			m_Grounded = false;
-			
-			
+
+
 
 
 			// WAIT, DID I ACTUALLY GET IT TO WORK?!?!?!?!
-			m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 10); // IT'S RIGHT, BUT IT'S WRONG!!!
-																				// IDK why this number has to be hard-coded in. 
-																				// (using a variable makes him jump like superman
+			//m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, 10); // IT'S RIGHT, BUT IT'S WRONG!!!
+			// IDK why this number has to be hard-coded in. 
+			// (using a variable makes him jump like superman
+			m_Rigidbody2D.velocity = Vector2.up* m_JumpForce;
 			// m_Rigidbody2D.AddForce(new Vector2(0f, m_JumpForce));
 			// JumpCount++;
 		}
@@ -232,15 +233,5 @@ public class CharacterController2D : MonoBehaviour
 	}
 
 
-	// WorldToggle is currently under maintenance. Please stand by. 
-	/* 
-	private void WorldToggle() // NOTE: THIS METHOD IS ONLY A CHECK, DOES NOT ACTUALLY TOGGLE THE WORLD!
-	{
-		if (Input.GetButtonDown("Mono"))
-		{
-			// bruh moment the ripple effect is currently broken. 
-			GameObject rfx = Instantiate(rippleFX.gameObject, m_Rigidbody2D.position, Quaternion.identity);
-		}
-	}
-	*/
+
 }

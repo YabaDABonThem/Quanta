@@ -41,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
     {
         animator.SetBool("Jump", false);
     }
-    public void OnCrouching(bool IsCrouching)
+    public void OnCrouching(bool isCrouching)
     {
-        animator.SetBool("IsCrouching", IsCrouching);
+        animator.SetBool("Crouch", isCrouching);
     }
     void FixedUpdate ()
     {
