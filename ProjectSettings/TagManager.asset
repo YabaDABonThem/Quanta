@@ -20,8 +20,9 @@ TagManager:
   - MonochromeGround
   - ColoredBackground
   - MonochromeBackground
-  - 
-  - 
+  - Walls
+  - Confiner
+  - Soft Ground
   - 
   - 
   - 

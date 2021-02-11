@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController2D controller;
+    public DavidsController controller;
 
-    public Animator animator;
+    //public Animator animator;
 
     //Fields for WorldToggle class
-    public WorldToggle worldToggle;
+    //public WorldToggle worldToggle;
 
     public float RunSpeed = 40f;
 
@@ -24,12 +24,12 @@ public class PlayerMovement : MonoBehaviour
 
         HorizontalMove = Input.GetAxisRaw("Horizontal") * RunSpeed;
 
-        animator.SetFloat("SpeedX", Mathf.Abs(HorizontalMove));
+        //animator.SetFloat("SpeedX", Mathf.Abs(HorizontalMove));
 
         if (Input.GetButtonDown("Jump"))
         {
             jump = true;
-            animator.SetBool("Jump", true);
+            //animator.SetBool("Jump", true);
         }
         if (Input.GetButtonDown("Crouch"))
         {
@@ -42,22 +42,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            worldToggle.Toggle();
+            //worldToggle.Toggle();
         }
         
         
     }
     public void OnLanding()
     {
-        animator.SetBool("Jump", false);
+        //animator.SetBool("Jump", false);
     }
     public void OnCrouching(bool isCrouching)
     {
-        animator.SetBool("Crouch", isCrouching);
+        //animator.SetBool("Crouch", isCrouching);
     }
     void FixedUpdate ()
     {
-        controller.Move(HorizontalMove * Time.fixedDeltaTime, crouch, jump);
+        controller.UpdateMovement(HorizontalMove * Time.fixedDeltaTime, crouch, jump);
         jump = false;
     }
 
