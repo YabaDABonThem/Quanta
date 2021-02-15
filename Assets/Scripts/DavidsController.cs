@@ -42,6 +42,7 @@ public class DavidsController : MonoBehaviour
     private bool canWalkOnSlope;
     private float jumpGravityScale = 2f;
     private float fallGravityScale = 2.5f;
+    private float SteepSlopeGravityScale = 3f;
 
     // Start is called before the first frame update
     void Start()
@@ -147,22 +148,30 @@ public class DavidsController : MonoBehaviour
         {
             controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (jumpGravityScale - 1) * Time.deltaTime;
         }
+        else if (!canWalkOnSlope && isOnSlope && isOnGround)
+        {
+            controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (SteepSlopeGravityScale - 1) * Time.deltaTime;
+        }
     }
 
     private void UpdateSlope()
     {
-        Vector2 checkPos = transform.position - new Vector3(0f, 0.87f);
+        Vector2 checkPosV = transform.position - new Vector3(0f, 0.87f);
+        Vector2 checkPosH = transform.position - new Vector3(0f, 0.82f);
 
-        USV(checkPos);
-        USH(checkPos);
+        USV(checkPosV);
+        USH(checkPosH);
     }
 
-    private void USH(Vector2 checkPos)
+    private void USH(Vector2 checkPosH)
     {
-        RaycastHit2D hitFront = Physics2D.Raycast(checkPos, transform.right, slopeCheckDistanceH, currentGroundType);
-        RaycastHit2D hitBack = Physics2D.Raycast(checkPos, -transform.right, slopeCheckDistanceH, currentGroundType);
-        Debug.DrawLine(checkPos, new Vector2(checkPos.x + slopeCheckDistanceH, checkPos.y), Color.green);
-        Debug.DrawLine(checkPos, new Vector2(checkPos.x - slopeCheckDistanceH, checkPos.y), Color.green);
+        RaycastHit2D hitFront = Physics2D.Raycast(checkPosH, transform.right, slopeCheckDistanceH, currentGroundType);
+        RaycastHit2D hitBack = Physics2D.Raycast(checkPosH, -transform.right, slopeCheckDistanceH, currentGroundType);
+        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x + slopeCheckDistanceH, checkPosH.y), Color.green);
+        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x - slopeCheckDistanceH, checkPosH.y), Color.green);
+
+        //Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
+        //Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
 
         if (hitFront)
         { 
@@ -182,10 +191,10 @@ public class DavidsController : MonoBehaviour
 
     }
 
-    private void USV(Vector2 checkPos)
+    private void USV(Vector2 checkPosV)
     {
-        RaycastHit2D hit = Physics2D.Raycast(checkPos, Vector2.down, slopeCheckDistanceV, currentGroundType);
-        Debug.DrawLine(checkPos, new Vector2(checkPos.x, checkPos.y - slopeCheckDistanceV), Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(checkPosV, Vector2.down, slopeCheckDistanceV, currentGroundType);
+        Debug.DrawLine(checkPosV, new Vector2(checkPosV.x, checkPosV.y - slopeCheckDistanceV), Color.green);
 
         if(hit)
         {
@@ -200,11 +209,11 @@ public class DavidsController : MonoBehaviour
 
             oldSlopeAngle = slopeAngle; 
 
-            Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
-            Debug.DrawRay(hit.point, hit.normal, Color.red);
+            //Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
+            //Debug.DrawRay(hit.point, hit.normal, Color.red);
         }
 
-        if(slopeAngle > maximumSlopeAngle || (slopeSideAngle > maximumSlopeAngle && slopeSideAngle != 90))
+        if(slopeAngle > maximumSlopeAngle || slopeSideAngle > maximumSlopeAngle)
         {
             canWalkOnSlope = false;
         }
