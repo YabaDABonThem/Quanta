@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public DavidsController controller;
+    //client-mutable fields
+    [Header("Assignments")]
 
     //public Animator animator;
+    [SerializeField] private DavidsController controller;
 
     //Fields for WorldToggle class
-    //public WorldToggle worldToggle;
+    [SerializeField] private WorldToggle worldToggle;
 
     public float RunSpeed = 40f;
 
@@ -42,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            //worldToggle.Toggle();
+            worldToggle.Toggle();
         }
         
         

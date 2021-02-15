@@ -13,7 +13,7 @@ public class DavidsController : MonoBehaviour
     [SerializeField] float characterSpeed = 5f;
     [SerializeField] PhysicsMaterial2D noFriction;
     [SerializeField] PhysicsMaterial2D fullFriction;
-    [SerializeField] float maximumSlopeAngle;
+    [SerializeField] float maximumSlopeAngle = 60;
 
     [Header("Movement Control")]
     [SerializeField] private float slopeCheckDistanceV;
@@ -43,6 +43,7 @@ public class DavidsController : MonoBehaviour
     private float jumpGravityScale = 2f;
     private float fallGravityScale = 2.5f;
     private float SteepSlopeGravityScale = 3f;
+    private float playerInputX;
 
     // Start is called before the first frame update
     void Start()
@@ -72,11 +73,13 @@ public class DavidsController : MonoBehaviour
 
     private void UpdateGrounding()
     {
+        //Check if character is falling using the y velocity
         if(controllerRigidbody.velocity.y < 0.0f)
         {
             isJumping = false; 
         }
 
+        //Check for ground type or whether or not the character is on ground. 
         if (controllerCollider.IsTouchingLayers(softGroundMask))
         {
             isOnGround = true;
@@ -96,6 +99,9 @@ public class DavidsController : MonoBehaviour
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
+        //Stores user x input
+        playerInputX = moveIn;
+
         //Handles Jumps
         if (jumpIn && isOnGround && canWalkOnSlope)
         {
@@ -140,14 +146,19 @@ public class DavidsController : MonoBehaviour
 
     private void UpdateGravity()
     { 
+        //changes gravity based on the motion of the character
+
+        //the character is falling
         if(!isJumping && !isOnGround)
         {
             controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (fallGravityScale - 1) * Time.deltaTime;
         }
+        //the character is jumping up
         else if (isJumping && !Input.GetButton("Jump"))
         {
             controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (jumpGravityScale - 1) * Time.deltaTime;
         }
+        //the character is on a un-climable slope
         else if (!canWalkOnSlope && isOnSlope && isOnGround)
         {
             controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (SteepSlopeGravityScale - 1) * Time.deltaTime;
@@ -161,6 +172,7 @@ public class DavidsController : MonoBehaviour
 
         USV(checkPosV);
         USH(checkPosH);
+        Debug.Log(canWalkOnSlope);
     }
 
     private void USH(Vector2 checkPosH)
@@ -173,15 +185,32 @@ public class DavidsController : MonoBehaviour
         //Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
         //Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
 
-        if (hitFront)
-        { 
+        if (hitFront && playerInputX > 0)
+        {
             isOnSlope = true;
             slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
+            Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
         }
-        else if(hitBack)
+        else if (hitBack && playerInputX < 0)
         {
             isOnSlope = true;
             slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
+            Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
+        }
+        else if (playerInputX == 0)
+        {
+            if(hitFront)
+            {
+                isOnSlope = true;
+                slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
+                Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
+            }
+            if(hitBack)
+            {
+                isOnSlope = true;
+                slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
+                Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
+            }
         }
         else
         {

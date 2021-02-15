@@ -11,7 +11,7 @@ public class WorldToggle : MonoBehaviour
     private bool color = true;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
