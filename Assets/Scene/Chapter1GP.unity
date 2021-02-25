@@ -553,13 +553,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 422209487}
-  m_LocalRotation: {x: -0, y: -0, z: 0.5701992, w: 0.8215065}
-  m_LocalPosition: {x: 306.17, y: -26.01, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0.17344987, w: 0.9848427}
+  m_LocalPosition: {x: 295.67, y: -24.79, z: 0}
   m_LocalScale: {x: 11.845, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 69.528}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 19.977001}
 --- !u!61 &422209490
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -586,70 +586,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!1 &559880662
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 559880663}
-  - component: {fileID: 559880665}
-  - component: {fileID: 559880664}
-  m_Layer: 0
-  m_Name: World Mask
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &559880663
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559880662}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 70009647}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &559880664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559880662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19cc82f8f8c09bf4bb86d967184d9066, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rippleFX: {fileID: 453758152513004329, guid: d98b530bb3a99f14991faf4c55a8869a, type: 3}
---- !u!95 &559880665
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559880662}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ef951f109d09d934eac1a8ae0287a588, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &584287112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,34 +986,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1939681523, guid: ad5c5ca3f53f726488da4a082a63c1b5, type: 3}
-      propertyPath: worldToggle
-      value: 
-      objectReference: {fileID: 559880664}
-    - target: {fileID: 1321884969184580384, guid: ad5c5ca3f53f726488da4a082a63c1b5,
-        type: 3}
-      propertyPath: slopeCheckDistance
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1321884969184580384, guid: ad5c5ca3f53f726488da4a082a63c1b5,
-        type: 3}
-      propertyPath: slopeCheckDistanceV
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1321884969184580384, guid: ad5c5ca3f53f726488da4a082a63c1b5,
-        type: 3}
-      propertyPath: slopeCheckDistanceH
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 6715153462929703969, guid: ad5c5ca3f53f726488da4a082a63c1b5,
         type: 3}
       propertyPath: m_Name
       value: Character
-      objectReference: {fileID: 0}
-    - target: {fileID: 6747421272022409958, guid: ad5c5ca3f53f726488da4a082a63c1b5,
-        type: 3}
-      propertyPath: m_GravityScale
-      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 6803490150304558133, guid: ad5c5ca3f53f726488da4a082a63c1b5,
         type: 3}
@@ -1556,7 +1468,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1708404085}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 285.22327, y: -23.781624, z: -10}
+  m_LocalPosition: {x: 284.9203, y: -23.782417, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

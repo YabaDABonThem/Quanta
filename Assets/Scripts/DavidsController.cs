@@ -16,8 +16,8 @@ public class DavidsController : MonoBehaviour
     [SerializeField] float maximumSlopeAngle = 60;
 
     [Header("Movement Control")]
-    [SerializeField] private float slopeCheckDistanceV;
-    [SerializeField] private float slopeCheckDistanceH;
+    [SerializeField] private float VSlopeCheckDistance = 0.25f;
+    [SerializeField] private float HSlopeCheckDistance = 0.5f;
 
     //propeties
     public bool CanMove { get; set; }
@@ -44,6 +44,7 @@ public class DavidsController : MonoBehaviour
     private float fallGravityScale = 2.5f;
     private float SteepSlopeGravityScale = 3f;
     private float playerInputX;
+    private bool USVisValid;
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +62,7 @@ public class DavidsController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     private void FixedUpdate()
@@ -94,7 +95,6 @@ public class DavidsController : MonoBehaviour
         {
             isOnGround = false;
         }
-
     }
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
@@ -130,6 +130,7 @@ public class DavidsController : MonoBehaviour
             Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
             controllerRigidbody.velocity = targetVelocity;
         }
+        //Debug.Log(characterSpeed * slopeNormalPerp.y * -moveIn);
 
         //toggles friction for slopes
         if (isOnSlope && moveIn == 0.0f && canWalkOnSlope)
@@ -167,66 +168,89 @@ public class DavidsController : MonoBehaviour
 
     private void UpdateSlope()
     {
-        Vector2 checkPosV = transform.position - new Vector3(0f, 0.87f);
-        Vector2 checkPosH = transform.position - new Vector3(0f, 0.82f);
+        Vector2 checkPosV = transform.position - new Vector3(0f, 0.8f);
+        Vector2 checkPosH = transform.position - new Vector3(0f, 0.8f);
 
-        USV(checkPosV);
         USH(checkPosH);
-        Debug.Log(canWalkOnSlope);
+        USV(checkPosV);
     }
 
     private void USH(Vector2 checkPosH)
     {
-        RaycastHit2D hitFront = Physics2D.Raycast(checkPosH, transform.right, slopeCheckDistanceH, currentGroundType);
-        RaycastHit2D hitBack = Physics2D.Raycast(checkPosH, -transform.right, slopeCheckDistanceH, currentGroundType);
-        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x + slopeCheckDistanceH, checkPosH.y), Color.green);
-        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x - slopeCheckDistanceH, checkPosH.y), Color.green);
+        RaycastHit2D hitFront = Physics2D.Raycast(checkPosH, transform.right, HSlopeCheckDistance, currentGroundType);
+        RaycastHit2D hitBack = Physics2D.Raycast(checkPosH, -transform.right, HSlopeCheckDistance, currentGroundType);
+        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x + HSlopeCheckDistance, checkPosH.y), Color.green);
+        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x - HSlopeCheckDistance, checkPosH.y), Color.green);
 
-        //Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
-        //Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
 
-        if (hitFront && playerInputX > 0)
-        {
-            isOnSlope = true;
-            slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
-            Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
-        }
-        else if (hitBack && playerInputX < 0)
-        {
-            isOnSlope = true;
-            slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
-            Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
-        }
-        else if (playerInputX == 0)
-        {
-            if(hitFront)
+        //nah don't let USV roam free only do check within the method, change this
+            if (playerInputX >= 0)
             {
-                isOnSlope = true;
-                slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
-                Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
+                if (hitFront)
+                {
+                    isOnSlope = true;
+                    slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
+                    Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
+                }
+                else if (hitBack)
+                {
+                    if(!USVisValid)
+                    {
+                        isOnSlope = true;
+                        slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
+                        Debug.DrawRay(hitBack.point, hitBack.normal, Color.red);
+                    }
+                }
+                else
+                {
+                    slopeSideAngle = 0.0f;
+                    isOnSlope = false;
+                }
             }
-            if(hitBack)
+            else if (playerInputX < 0)
             {
-                isOnSlope = true;
-                slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
-                Debug.DrawRay(hitBack.point, hitFront.normal, Color.red);
+                if (hitBack)
+                {
+                    isOnSlope = true;
+                    slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
+                    Debug.DrawRay(hitBack.point, hitBack.normal, Color.red);
+                }
+                else if (hitFront)
+                {
+                    if (!USVisValid)
+                    {
+                        isOnSlope = true;
+                        slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
+                        Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
+                    }
+                }
+                else
+                {
+                    slopeSideAngle = 0.0f;
+                    isOnSlope = false;
+                }
             }
-        }
-        else
-        {
-            slopeSideAngle = 0.0f;
-            isOnSlope = false;
-        }
 
+        //Debug.Log(slopeSideAngle);
+      
+            if (slopeAngle > maximumSlopeAngle || slopeSideAngle > maximumSlopeAngle)
+            {
+                canWalkOnSlope = false;
+            }
+            else
+            {
+                canWalkOnSlope = true;
+            }
     }
 
     private void USV(Vector2 checkPosV)
     {
-        RaycastHit2D hit = Physics2D.Raycast(checkPosV, Vector2.down, slopeCheckDistanceV, currentGroundType);
-        Debug.DrawLine(checkPosV, new Vector2(checkPosV.x, checkPosV.y - slopeCheckDistanceV), Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(checkPosV, Vector2.down, VSlopeCheckDistance, currentGroundType);
+        Debug.DrawLine(checkPosV, new Vector2(checkPosV.x, checkPosV.y - VSlopeCheckDistance), Color.green);
 
         if(hit)
         {
+            USVisValid = true;
             slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
 
             slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
@@ -236,20 +260,15 @@ public class DavidsController : MonoBehaviour
                 isOnSlope = true;
             }
 
-            oldSlopeAngle = slopeAngle; 
+            oldSlopeAngle = slopeAngle;
 
             //Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
             //Debug.DrawRay(hit.point, hit.normal, Color.red);
+
+            return;
         }
 
-        if(slopeAngle > maximumSlopeAngle || slopeSideAngle > maximumSlopeAngle)
-        {
-            canWalkOnSlope = false;
-        }
-        else
-        {
-            canWalkOnSlope = true;
-        }
+        USVisValid = false;
     }
 
 }
