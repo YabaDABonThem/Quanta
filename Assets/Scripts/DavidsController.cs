@@ -29,9 +29,9 @@ public class DavidsController : MonoBehaviour
     private LayerMask hardGroundMask;
 
     //funnctional field
-    private Vector2 colliderSize;
+    //private Vector2 colliderSize;
     private Vector3 Velocity = Vector3.zero;
-    private Vector2 slopeNormalPerp;
+    //private Vector2 slopeNormalPerp;
     private LayerMask currentGroundType;
     private bool isOnGround = false;
     private bool isJumping;
@@ -54,7 +54,7 @@ public class DavidsController : MonoBehaviour
         softGroundMask = LayerMask.GetMask("Soft Ground");
         hardGroundMask = LayerMask.GetMask("Hard Ground");
 
-        colliderSize = controllerCollider.size;
+        //colliderSize = controllerCollider.size;
 
         CanMove = true;
     }
@@ -100,10 +100,28 @@ public class DavidsController : MonoBehaviour
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
         //Stores user x input
-        playerInputX = moveIn;
+        //playerInputX = moveIn;
+
+        //most basic controls
+        if(jumpIn && isOnGround && canWalkOnSlope)
+        {
+            isJumping = true;
+            controllerRigidbody.velocity = new Vector2(controllerRigidbody.velocity.x, 1f * jumpForce);
+        }
+
+        if (isOnGround && canWalkOnSlope)
+        {
+            Vector2 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
+            controllerRigidbody.velocity = targetVelocity;
+        }
+        else if (isOnGround && !canWalkOnSlope)
+        {
+            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
+            controllerRigidbody.velocity = Vector3.SmoothDamp(controllerRigidbody.velocity, targetVelocity, ref Velocity, movementSmoothing);
+        }
 
         //Handles Jumps
-        if (jumpIn && isOnGround && canWalkOnSlope)
+        /*if (jumpIn && isOnGround && canWalkOnSlope)
         {
             isJumping = true;
             controllerRigidbody.velocity = new Vector2(controllerRigidbody.velocity.x, 1.0f * jumpForce);
@@ -140,7 +158,7 @@ public class DavidsController : MonoBehaviour
         else
         {
             controllerRigidbody.sharedMaterial = noFriction;
-        }
+        }*/
 
         //implement running sound and animation.
     }
@@ -168,8 +186,8 @@ public class DavidsController : MonoBehaviour
 
     private void UpdateSlope()
     {
-        Vector2 checkPosV = transform.position - new Vector3(0f, 0.8f);
-        Vector2 checkPosH = transform.position - new Vector3(0f, 0.8f);
+        Vector2 checkPosV = transform.position - new Vector3(0f, 1.45f);
+        Vector2 checkPosH = transform.position - new Vector3(0f, 1.45f);
 
         USH(checkPosH);
         USV(checkPosV);
@@ -251,7 +269,7 @@ public class DavidsController : MonoBehaviour
         if(hit)
         {
             USVisValid = true;
-            slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
+            //slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
 
             slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 
