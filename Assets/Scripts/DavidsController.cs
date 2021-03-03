@@ -17,7 +17,7 @@ public class DavidsController : MonoBehaviour
 
     [Header("Movement Control")]
     [SerializeField] private float VSlopeCheckDistance = 0.25f;
-    [SerializeField] private float HSlopeCheckDistance = 0.5f;
+    [SerializeField] private float HSlopeCheckDistance = 0.8f;
 
     //propeties
     public bool CanMove { get; set; }
@@ -29,9 +29,7 @@ public class DavidsController : MonoBehaviour
     private LayerMask hardGroundMask;
 
     //funnctional field
-    //private Vector2 colliderSize;
     private Vector3 Velocity = Vector3.zero;
-    //private Vector2 slopeNormalPerp;
     private LayerMask currentGroundType;
     private bool isOnGround = false;
     private bool isJumping;
@@ -99,8 +97,7 @@ public class DavidsController : MonoBehaviour
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
-        //Stores user x input
-        //playerInputX = moveIn;
+        playerInputX = moveIn;
 
         //most basic controls
         if(jumpIn && isOnGround && canWalkOnSlope)
@@ -109,46 +106,16 @@ public class DavidsController : MonoBehaviour
             controllerRigidbody.velocity = new Vector2(controllerRigidbody.velocity.x, 1f * jumpForce);
         }
 
-        if (isOnGround && canWalkOnSlope)
+        if (isOnGround && !canWalkOnSlope)
+        {
+            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
+            controllerRigidbody.velocity = Vector3.SmoothDamp(controllerRigidbody.velocity, targetVelocity, ref Velocity, movementSmoothing);
+        }
+        else
         {
             Vector2 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
             controllerRigidbody.velocity = targetVelocity;
         }
-        else if (isOnGround && !canWalkOnSlope)
-        {
-            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
-            controllerRigidbody.velocity = Vector3.SmoothDamp(controllerRigidbody.velocity, targetVelocity, ref Velocity, movementSmoothing);
-        }
-
-        //Handles Jumps
-        /*if (jumpIn && isOnGround && canWalkOnSlope)
-        {
-            isJumping = true;
-            controllerRigidbody.velocity = new Vector2(controllerRigidbody.velocity.x, 1.0f * jumpForce);
-        }
-
-        //Handles movement w/ slope checks
-        if (isOnGround && !isOnSlope && !isJumping)
-        {
-            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, 0.0f);
-            controllerRigidbody.velocity = targetVelocity;
-        }
-        else if(isOnGround && isOnSlope && !isJumping && !canWalkOnSlope)
-        {
-            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, 0.0f);
-            controllerRigidbody.velocity = Vector3.SmoothDamp(controllerRigidbody.velocity, targetVelocity, ref Velocity, movementSmoothing);
-        }
-        else if(isOnGround && isOnSlope && !isJumping && canWalkOnSlope)
-        {
-            Vector3 targetVelocity = new Vector2(characterSpeed * slopeNormalPerp.x * -moveIn, characterSpeed * slopeNormalPerp.y * -moveIn);
-            controllerRigidbody.velocity = targetVelocity;
-        }
-        else if(!isOnGround)
-        {
-            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
-            controllerRigidbody.velocity = targetVelocity;
-        }
-        //Debug.Log(characterSpeed * slopeNormalPerp.y * -moveIn);
 
         //toggles friction for slopes
         if (isOnSlope && moveIn == 0.0f && canWalkOnSlope)
@@ -158,7 +125,7 @@ public class DavidsController : MonoBehaviour
         else
         {
             controllerRigidbody.sharedMaterial = noFriction;
-        }*/
+        }
 
         //implement running sound and animation.
     }
@@ -186,8 +153,8 @@ public class DavidsController : MonoBehaviour
 
     private void UpdateSlope()
     {
-        Vector2 checkPosV = transform.position - new Vector3(0f, 1.45f);
-        Vector2 checkPosH = transform.position - new Vector3(0f, 1.45f);
+        Vector2 checkPosV = transform.position - new Vector3(0.1f, 1.45f);
+        Vector2 checkPosH = transform.position - new Vector3(0.1f, 1.45f);
 
         USH(checkPosH);
         USV(checkPosV);
