@@ -23,32 +23,28 @@ public class DavidsController : MonoBehaviour
     public bool CanMove { get; set; }
 
     //References
-    private Rigidbody2D controllerRigidbody;
+    private Rigidbody2D controllerRB;
     private CapsuleCollider2D controllerCollider;
     private LayerMask softGroundMask;
     private LayerMask hardGroundMask;
+    private LayerMask wallMask;
 
     //funnctional field
     private Vector3 Velocity = Vector3.zero;
     private LayerMask currentGroundType;
     private bool isOnGround = false;
     private bool isJumping;
-    private float slopeAngle;
-    private float slopeSideAngle;
-    private float oldSlopeAngle;
-    private bool isOnSlope;
-    private bool canWalkOnSlope;
     private float jumpGravityScale = 2f;
     private float fallGravityScale = 2.5f;
     private float SteepSlopeGravityScale = 3f;
-    private float playerInputX;
-    private bool USVisValid;
+    private bool isOnWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        controllerRigidbody = GetComponent<Rigidbody2D>();
+        controllerRB = GetComponent<Rigidbody2D>();
         controllerCollider = GetComponent<CapsuleCollider2D>();
+        wallMask = LayerMask.GetMask("Wall");
         softGroundMask = LayerMask.GetMask("Soft Ground");
         hardGroundMask = LayerMask.GetMask("Hard Ground");
 
@@ -66,14 +62,14 @@ public class DavidsController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateGrounding();
-        UpdateSlope();
+        //UpdateSlope();
         UpdateGravity();
     }
 
     private void UpdateGrounding()
     {
         //Check if character is falling using the y velocity
-        if(controllerRigidbody.velocity.y < 0.0f)
+        if(controllerRB.velocity.y < 0.0f)
         {
             isJumping = false; 
         }
@@ -93,38 +89,50 @@ public class DavidsController : MonoBehaviour
         {
             isOnGround = false;
         }
+
+        //Check whether or not the character is in contact with a wall
+        if(controllerCollider.IsTouchingLayers(wallMask))
+        {
+            isOnWall = true;
+        }
+        else
+        {
+            isOnWall = false;
+        }
     }
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
-        playerInputX = moveIn;
+        //playerInputX = moveIn;
 
         //most basic controls
-        if(jumpIn && isOnGround && canWalkOnSlope)
+        if(jumpIn && isOnGround && !isOnWall)
         {
             isJumping = true;
-            controllerRigidbody.velocity = new Vector2(controllerRigidbody.velocity.x, 1f * jumpForce);
+            controllerRB.velocity = new Vector2(controllerRB.velocity.x, 1f * jumpForce);
         }
 
-        if (isOnGround && !canWalkOnSlope)
+        Debug.Log(isOnWall);
+
+        if (isOnWall)
         {
-            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
-            controllerRigidbody.velocity = Vector3.SmoothDamp(controllerRigidbody.velocity, targetVelocity, ref Velocity, movementSmoothing);
+            Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRB.velocity.y);
+            controllerRB.velocity = Vector3.SmoothDamp(controllerRB.velocity, targetVelocity, ref Velocity, movementSmoothing);
         }
         else
         {
-            Vector2 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRigidbody.velocity.y);
-            controllerRigidbody.velocity = targetVelocity;
+            Vector2 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRB.velocity.y);
+            controllerRB.velocity = targetVelocity;
         }
 
         //toggles friction for slopes
-        if (isOnSlope && moveIn == 0.0f && canWalkOnSlope)
+        if (moveIn == 0.0f && !isOnWall)
         {
-            controllerRigidbody.sharedMaterial = fullFriction;
+            controllerRB.sharedMaterial = fullFriction;
         }
         else
         {
-            controllerRigidbody.sharedMaterial = noFriction;
+            controllerRB.sharedMaterial = noFriction;
         }
 
         //implement running sound and animation.
@@ -137,123 +145,18 @@ public class DavidsController : MonoBehaviour
         //the character is falling
         if(!isJumping && !isOnGround)
         {
-            controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (fallGravityScale - 1) * Time.deltaTime;
+            controllerRB.velocity += Vector2.up * Physics2D.gravity.y * (fallGravityScale - 1) * Time.deltaTime;
         }
         //the character is jumping up
         else if (isJumping && !Input.GetButton("Jump"))
         {
-            controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (jumpGravityScale - 1) * Time.deltaTime;
+            controllerRB.velocity += Vector2.up * Physics2D.gravity.y * (jumpGravityScale - 1) * Time.deltaTime;
         }
         //the character is on a un-climable slope
-        else if (!canWalkOnSlope && isOnSlope && isOnGround)
+        else if (isOnWall)
         {
-            controllerRigidbody.velocity += Vector2.up * Physics2D.gravity.y * (SteepSlopeGravityScale - 1) * Time.deltaTime;
+            controllerRB.velocity += Vector2.up * Physics2D.gravity.y * (SteepSlopeGravityScale - 1) * Time.deltaTime;
         }
-    }
-
-    private void UpdateSlope()
-    {
-        Vector2 checkPosV = transform.position - new Vector3(0.1f, 1.45f);
-        Vector2 checkPosH = transform.position - new Vector3(0.1f, 1.45f);
-
-        USH(checkPosH);
-        USV(checkPosV);
-    }
-
-    private void USH(Vector2 checkPosH)
-    {
-        RaycastHit2D hitFront = Physics2D.Raycast(checkPosH, transform.right, HSlopeCheckDistance, currentGroundType);
-        RaycastHit2D hitBack = Physics2D.Raycast(checkPosH, -transform.right, HSlopeCheckDistance, currentGroundType);
-        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x + HSlopeCheckDistance, checkPosH.y), Color.green);
-        Debug.DrawLine(checkPosH, new Vector2(checkPosH.x - HSlopeCheckDistance, checkPosH.y), Color.green);
-
-
-        //nah don't let USV roam free only do check within the method, change this
-            if (playerInputX >= 0)
-            {
-                if (hitFront)
-                {
-                    isOnSlope = true;
-                    slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
-                    Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
-                }
-                else if (hitBack)
-                {
-                    if(!USVisValid)
-                    {
-                        isOnSlope = true;
-                        slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
-                        Debug.DrawRay(hitBack.point, hitBack.normal, Color.red);
-                    }
-                }
-                else
-                {
-                    slopeSideAngle = 0.0f;
-                    isOnSlope = false;
-                }
-            }
-            else if (playerInputX < 0)
-            {
-                if (hitBack)
-                {
-                    isOnSlope = true;
-                    slopeSideAngle = Vector2.Angle(hitBack.normal, Vector2.up);
-                    Debug.DrawRay(hitBack.point, hitBack.normal, Color.red);
-                }
-                else if (hitFront)
-                {
-                    if (!USVisValid)
-                    {
-                        isOnSlope = true;
-                        slopeSideAngle = Vector2.Angle(hitFront.normal, Vector2.up);
-                        Debug.DrawRay(hitFront.point, hitFront.normal, Color.red);
-                    }
-                }
-                else
-                {
-                    slopeSideAngle = 0.0f;
-                    isOnSlope = false;
-                }
-            }
-
-        //Debug.Log(slopeSideAngle);
-      
-            if (slopeAngle > maximumSlopeAngle || slopeSideAngle > maximumSlopeAngle)
-            {
-                canWalkOnSlope = false;
-            }
-            else
-            {
-                canWalkOnSlope = true;
-            }
-    }
-
-    private void USV(Vector2 checkPosV)
-    {
-        RaycastHit2D hit = Physics2D.Raycast(checkPosV, Vector2.down, VSlopeCheckDistance, currentGroundType);
-        Debug.DrawLine(checkPosV, new Vector2(checkPosV.x, checkPosV.y - VSlopeCheckDistance), Color.green);
-
-        if(hit)
-        {
-            USVisValid = true;
-            //slopeNormalPerp = Vector2.Perpendicular(hit.normal).normalized;
-
-            slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
-
-            if(slopeAngle != oldSlopeAngle)
-            {
-                isOnSlope = true;
-            }
-
-            oldSlopeAngle = slopeAngle;
-
-            //Debug.DrawRay(hit.point, slopeNormalPerp, Color.blue);
-            //Debug.DrawRay(hit.point, hit.normal, Color.red);
-
-            return;
-        }
-
-        USVisValid = false;
     }
 
 }

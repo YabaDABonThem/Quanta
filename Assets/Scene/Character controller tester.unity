@@ -492,6 +492,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Square (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 4430121552206641146, guid: 67354641392428f4ea38acfde5ed70c5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 6140649701802475333, guid: 67354641392428f4ea38acfde5ed70c5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -856,6 +861,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Square (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4430121552206641146, guid: 67354641392428f4ea38acfde5ed70c5,
+        type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 6140649701802475333, guid: 67354641392428f4ea38acfde5ed70c5,
         type: 3}
