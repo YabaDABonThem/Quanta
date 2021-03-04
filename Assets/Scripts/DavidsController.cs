@@ -62,7 +62,6 @@ public class DavidsController : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateGrounding();
-        //UpdateSlope();
         UpdateGravity();
     }
 
@@ -103,22 +102,21 @@ public class DavidsController : MonoBehaviour
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
-        //playerInputX = moveIn;
 
-        //most basic controls
+        //jump control
         if(jumpIn && isOnGround && !isOnWall)
         {
             isJumping = true;
             controllerRB.velocity = new Vector2(controllerRB.velocity.x, 1f * jumpForce);
         }
 
-        Debug.Log(isOnWall);
-
+        //controls horizontal movement on wall surfaces
         if (isOnWall)
         {
             Vector3 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRB.velocity.y);
             controllerRB.velocity = Vector3.SmoothDamp(controllerRB.velocity, targetVelocity, ref Velocity, movementSmoothing);
         }
+        //controls horizontal movement on regular surfaces
         else
         {
             Vector2 targetVelocity = new Vector2(moveIn * characterSpeed, controllerRB.velocity.y);
