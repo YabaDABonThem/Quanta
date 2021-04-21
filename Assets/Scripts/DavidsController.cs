@@ -102,6 +102,7 @@ public class DavidsController : MonoBehaviour
 
     public void UpdateMovement(float moveIn, bool crouch, bool jumpIn)
     {
+        Debug.Log(isOnGround);
 
         //jump control
         if(jumpIn && isOnGround && !isOnWall)

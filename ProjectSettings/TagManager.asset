@@ -37,8 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - MovingComponent
+  - InteractableRange
   m_SortingLayers:
   - name: Background
     uniqueID: 1675033041
